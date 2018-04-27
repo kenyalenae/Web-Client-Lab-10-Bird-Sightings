@@ -19,7 +19,22 @@ var birdSchema = new mongoose.Schema({
         min: [1, 'Should  be at least 1 egg'],
         max: [50, 'Should not be more than 50 eggs.'] }, // average amount of eggs
     endangered: { type: Boolean, default: false }, // is this an endangered bird species?
-    datesSeen: [ Date ] // array of dates a bird of this species was seen
+    datesSeen: [    // array of dates a bird of this species was seen
+        {
+            type: Date,
+            required: [true, 'A date is required to add a new sighting.'],
+            validate: {
+                validator: function(date) {
+                    return date.getTime() <= Date.now();
+                },
+                message: 'Date must be a valid date, and date must be now or in the past.'
+            },
+        }
+    ],
+    nest: {
+        location: String,
+        materials: String
+    }
 });
 
 var Bird = mongoose.model('Bird', birdSchema);

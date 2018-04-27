@@ -15,6 +15,11 @@
         <p>{{bird.name}} is not endangered</p>
     {{/if}}
 
+    <h3>Nest Information</h3>
+
+    <p>Location: {{bird.nest.location}}</p>
+    <p>Materials: {{bird.nest.materials}}</p>
+
 </div>
 
 <div class="sighting-dates">
@@ -25,12 +30,12 @@
         <h3>Report a new sighting</h3>
 
         <form method="POST" action="/addSighting">
-            Sighting date: <input type="date" name="date">
+            Sighting date: <input name="date" type="datetime-local" required>
             <input type="hidden" name="_id" value="{{bird._id}}">
             <button type="submit">Submit Sighting</button>
         </form>
 
-        <div class="flash-errorss">
+        <div class="flash-errors">
             {{#if messages}}
                 <p class="error-message">{{messages.error}}</p>
             {{/if}}
@@ -40,9 +45,11 @@
 
     <div class="sighting-list">
 
-        <h3>All sighting dates</h3>
+        <p>Number of sightings: {{length bird.datesSeen}}</p>
+
+        <h3>All sighting dates, local Minnesota time</h3>
         {{#each bird.datesSeen}}
-            <p>{{this}}</p>
+            <p>{{formatDate this}}</p>
         {{else}}
             <p>No sightings for {{bird.name}}</p>
         {{/each}}
