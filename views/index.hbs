@@ -12,6 +12,7 @@
         Endangered?     <input name="endangered" value="true" type="checkbox">      <br>
         Nest Materials: <input name="nestMaterials">    <br>
         Nest Location:  <input name="nestLocation">     <br>
+        Height of bird: <input name="height">           <br>
 
         <button type="submit">Submit</button>
 
@@ -32,7 +33,7 @@
     {{#each birds}}
         <h3>{{this.name}}</h3>
         <p>{{this.description}}<p>
-        <p><a href="/bird"{{this.id}}>{{this.name}} info and sightings</a></p>
+        <p><a href="/bird/{{this.id}}">{{this.name}} info and sightings</a></p>
     {{else}}
         <p>No birds in the database</p>
     {{/each}}

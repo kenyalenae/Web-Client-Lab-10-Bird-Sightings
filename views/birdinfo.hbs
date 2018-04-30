@@ -8,6 +8,9 @@
     <h3>Average Eggs Laid</h3>
     <p>{{bird.averageEggs}}</p>
 
+    <h3>Height of Bird</h3>
+    <p>{{bird.height}}cm</p>
+
     <h3>Conservation Status</h3>
     {{#if bird.endangered}}
         <p>{{bird.name}} is endangered</p>
@@ -54,5 +57,33 @@
             <p>No sightings for {{bird.name}}</p>
         {{/each}}
     </div>
+
+</div>
+
+<h2>Update Bird Information</h2>
+
+<ul>
+    {{#each messages}}
+        <li>{{this}}</li>
+    {{/each}}
+</ul>
+
+<form action="/updateBird" method="POST">
+    Description:    <input name="description">      <br>
+    Average Eggs:   <input name="averageEggs" type="number" min="1" max="50">   <br>
+    Endangered?     <input name="endangered" value="true" type="checkbox">      <br>
+    Nest Materials: <input name="nestMaterials">    <br>
+    Nest Location:  <input name="nestLocation">     <br>
+    Height of bird: <input name="height">           <br>
+    <input type="submit" name="updateBirdInfo" value="Update Bird">
+</form>
+
+
+<div class="delete-bird">
+
+    <form class="delete-form" action="/delete" method="POST">
+        <input class="delete-button" type="submit" name="delete" value="Delete Bird">
+        <input type="hidden" name="_id" value="{{bird._id}}">
+    </form>
 
 </div>

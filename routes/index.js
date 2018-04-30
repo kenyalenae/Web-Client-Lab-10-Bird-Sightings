@@ -69,7 +69,6 @@ router.get('/bird/:_id', function(req, res, next){
 });
 
 /* POST a new sighting for a bird */
-// TODO test if dates work
 router.post('/addSighting', function(req, res, next){
 
     Bird.findOneAndUpdate(
@@ -100,6 +99,56 @@ router.post('/addSighting', function(req, res, next){
             }
 
         });
+});
+
+router.post('/updateBird', function(req, res, next){
+
+    if (req.body.description || req.body.averageEggs || req.body.endangered ||
+        req.body.nest.location || req.body.nest.materials || req.body.height) { // if any fields have been updated
+        // add to the req.bird object
+        req.bird.description = req.body.description || req.bird.description;
+        req.bird.averageEggs = req.body.averageEggs || req.bird.averageEggs;
+        req.bird.endangered = req.body.endangered || req.bird.endangered;
+        req.bird.nest.location = req.body.nest.location || req.bird.nest.location;
+        req.bird.nest.materials = req.body.nest.materials || req.bird.nest.materials;
+        req.bird.height = req.body.height || req.bird.height;
+
+        // save the modified bird, to save to the database
+        req.bird.save()
+            .then( () => {
+                req.flash('updateMsg', 'Your data was updated')
+                res.redirect('/birdinfo');
+            })
+            .catch ( (err) => {
+                if (err.name === 'ValidationError') {
+                    req.flash('updateMsg', 'Your data is not valid')
+                    res.redirect('/birdinfo');
+                } else {
+                    next(err);
+                }
+            });
+    } else {
+        req.flash('updateMsg', 'Please enter some data');
+        res.redirect('/birdinfo');
+    }
+});
+
+/* POST to delete a bird */
+router.post('/delete', function(req, res, next){
+
+    Bird.findByIdAndRemove(req.body._id)
+        .then( (deletedTask) => {
+            if (deletedTask) {
+                res.redirect('/');
+            } else {
+                var error = new Error('Bird Not Found')
+                error.status = 404;
+                next(error);
+            }
+        })
+        .catch( (err) => {
+            next(err)
+        })
 });
 
 module.exports = router;

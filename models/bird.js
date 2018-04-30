@@ -34,7 +34,12 @@ var birdSchema = new mongoose.Schema({
     nest: {
         location: String,
         materials: String
-    }
+    },
+    height: {
+        type: Number,
+        min: [1, 'Should be atleast 1cm'],
+        max: [300, 'Should not be more than 300cm']
+    }       // height of bird between 1cm-300cm
 });
 
 var Bird = mongoose.model('Bird', birdSchema);
